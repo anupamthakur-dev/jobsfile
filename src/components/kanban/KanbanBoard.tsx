@@ -124,7 +124,7 @@ export default function KanbanBoard() {
         {KANBAN_COLUMNS.map((column) => {
           const isCollapsed = collapsed[column.key];
           const columnJobs = jobs.filter(
-            (j) => j.status === column.key
+            (j) => (j.status === column.key && !j.archived)
           );
 
           return (

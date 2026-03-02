@@ -16,11 +16,12 @@ const initialState: IJobWithId = {
     application_link: "",
     recruiter_email: "",
     date_applied: "",
-    job_type:null,
+    job_type:'full-time',
     applied:false,
     createdAt:'',
     starred:false,
-    status:'applied'
+    status:'applied',
+    archived:false
 
 };
 

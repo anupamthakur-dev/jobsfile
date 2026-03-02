@@ -14,7 +14,7 @@ export function Header() {
 			<div className="flex min-w-0 flex-1 items-center gap-3 ">
 				<h1 className="truncate text-sm font-semibold md:text-base ">Jobs Dashboard</h1>
 				<div className="ml-auto ">
-					<AddJobDialog label="Add Job" variant={'default'}/>
+					<AddJobDialog label="Add Job" variant={'default'} icon="Plus"/>
 				</div>
 			</div>
 		</header>

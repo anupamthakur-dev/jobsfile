@@ -1,3 +1,25 @@
 .hide-scrollBar::-webkit-scrollbar{
  appearance: none;
 }
+.star-icon {
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+.star-animate {
+  animation: star-bounce-spin 0.45s ease-out;
+}
+
+@keyframes star-bounce-spin {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  40% {
+    transform: scale(1.25) rotate(12deg);
+  }
+  70% {
+    transform: scale(0.95) rotate(-6deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}

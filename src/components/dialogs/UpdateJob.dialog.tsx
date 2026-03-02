@@ -8,10 +8,11 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button";
 
+import type { IJobWithId } from "@/stores/jobs.store";
 import Icon from "../Icon";
-import AddJobForm from "../form/AddJob.form";
+import UpdateJobForm from "../form/updateJob.form";
 
-function AddJobDialog({label,variant,icon}:{label:string,variant:"link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined,icon:string}){
+function UpdateJobDialog({label,variant,jobId,icon}:{label:string,variant:"link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined,jobId:IJobWithId['id'],icon:string}){
 
     return(
     <Dialog>
@@ -19,15 +20,15 @@ function AddJobDialog({label,variant,icon}:{label:string,variant:"link" | "defau
   
   <DialogContent  className="h-[calc(100vh-64px)]">
     <DialogHeader>
-      <DialogTitle className="text-xl">Add New Job</DialogTitle>
+      <DialogTitle className="text-xl">Update Job</DialogTitle>
      <DialogDescription>
-      Fill out the form below to create a new job listing.
+      Fill out the form below to update job.
     </DialogDescription>
     </DialogHeader>
- <AddJobForm/>
+   <UpdateJobForm jobId={jobId}/>
   </DialogContent>
 </Dialog>
     )
 }
 
-export default AddJobDialog;
+export default UpdateJobDialog;

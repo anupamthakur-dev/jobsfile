@@ -1,40 +1,75 @@
-import { useParams } from "react-router"
-import { useJobs } from "@/stores/jobs.store"
-import { Button } from "@/components/ui/button"
-import Icon from "@/components/Icon"
-import AddJobDialog from "@/components/dialogs/AddJob.dialog"
+import { useParams } from "react-router";
+import { useJobs, type IJobWithId } from "@/stores/jobs.store";
+import Icon from "@/components/Icon";
+import UpdateJobDialog from "@/components/dialogs/UpdateJob.dialog";
+import { Button } from "@/components/ui/button";
+import { AlertDialogDestructive } from "@/components/dialogs/confirm.dialog";
 
 function JobDetails() {
-  const { jobId } = useParams<{ jobId: string }>()
+  const { jobId } = useParams<{ jobId: string }>();
   const { getJob } = useJobs();
-  
+  const { updateJob } = useJobs();
+  const {removeJob} = useJobs();
+
+ 
 
   if (!jobId) {
-    return <EmptyState title="Not Found" />
+    return <EmptyState title="Not Found" />;
   }
 
-  const job = getJob(jobId)
+  const job = getJob(jobId);
 
   if (!job) {
-    return <EmptyState title="Job not found" />
+    return <EmptyState title="Job not found" />;
   }
 
+  function starJob(id: IJobWithId["id"]) {
+    if (!job) return;
+    updateJob({ id, starred: !job.starred });
+  }
+
+   function handleRemove(){
+    if(!job) return;
+    removeJob(job.id)
+  }
+ 
+  function archieveJob(id: IJobWithId["id"]){
+     if(!id) return;
+     const now = new Date()
+     updateJob({id,archived:true,archivedAt:now.toISOString()})
+  }
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 md:py-10">
       {/* Header */}
-      <header className="space-y-1 border-b pb-4 flex justify-between items-end">
-        <div>
-        <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
-          {job.job_title}
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          {job.company_name}
-        </p>
+      <header className=" border-b pb-4 ">
+        <div className=" flex items-center justify-end gap-2">
+          <UpdateJobDialog
+            variant={"secondary"}
+            label="Edit"
+            jobId={job.id}
+            icon="SquarePen"
+          />
+          <Button variant={"secondary"} onClick={()=>archieveJob(job.id)} disabled={job.archived}><Icon iconName="Package" size={18}/> <span className="text-sm">Archieve</span></Button>
+      
+          <AlertDialogDestructive onConfirm={handleRemove} />
         </div>
         <div>
-            {/* <Button variant={'secondary'}><Icon iconName="SquarePen" /><span>Edit</span></Button> */}
-            <AddJobDialog variant={'secondary'} label="Edit" />
+          <div className="flex items-center gap-4 ">
+            <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
+              {job.job_title}
+            </h1>
+            <button className="cursor-pointer" onClick={() => starJob(job.id)}>
+              <Icon
+                iconName="Star"
+                fill={job.starred ? "#FACC15" : "transparent"}
+                stroke={job.starred ? "#d1a700" : "#000"}
+                className={`star-icon ${job.starred ? "star-animate" : ""}`}
+              />
+            </button>
+          </div>
+          <p className="text-sm text-muted-foreground">{job.company_name}</p>
         </div>
+        
       </header>
 
       {/* Meta */}
@@ -82,26 +117,22 @@ function JobDetails() {
         )}
       </footer>
     </div>
-  )
+  );
 }
 
 function Badge({ label }: { label: string }) {
-  return (
-    <span className="rounded-md border px-2 py-1 text-xs">
-      {label}
-    </span>
-  )
+  return <span className="rounded-md border px-2 py-1 text-xs">{label}</span>;
 }
 
-function EmptyState({ title }: { title: string }) {
+export function EmptyState({ title }: { title: string }) {
   return (
     <div className="flex h-[60vh] items-center justify-center text-sm text-muted-foreground">
       {title}
     </div>
-  )
+  );
 }
 
 function formatDate(date: string) {
-  return new Date(date).toLocaleDateString()
+  return new Date(date).toLocaleDateString();
 }
 export default JobDetails;

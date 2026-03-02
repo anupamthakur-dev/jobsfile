@@ -1,6 +1,9 @@
 import App from "@/App";
-import JobDetails from "@/pages/JobDetails";
+import JobDetails, { EmptyState } from "@/pages/JobDetails";
+import NeedFollowUp from "@/pages/needFollowUp";
 import Overview from "@/pages/overview";
+import StarredPage from "@/pages/starredPage";
+
 import { createBrowserRouter } from "react-router";
 
 export const appRoutes = createBrowserRouter([
@@ -14,11 +17,11 @@ export const appRoutes = createBrowserRouter([
             },
             {
                 path:"follow-up",
-                element:<div>this is follow up</div>
+                element:<NeedFollowUp/>
             },
             {
                 path:"starred",
-                element:<div>this is starred</div>
+                element:<StarredPage/>
             },
             {
                 path:"archieved",
@@ -27,6 +30,10 @@ export const appRoutes = createBrowserRouter([
             {
                 path:"/:jobId",
                 element:<JobDetails/>
+            },
+            {
+                path:"*",
+                element:<EmptyState title="Page not found" />
             }
         ]
     }

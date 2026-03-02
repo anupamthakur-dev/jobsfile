@@ -37,8 +37,16 @@ export interface IJob {
     application_link:string;
     recruiter_email:string;
     date_applied?:string;
-    job_type: null | IJobType
+    job_type:  IJobType
 }
 
 
 export type ColumnKey = typeof KANBAN_COLUMNS[number]["key"];
+
+
+export type FollowUpBucket =
+  | "no_date"
+  | "today"
+  | "tomorrow"
+  | "this_week"
+  | "later"
