@@ -20,10 +20,10 @@ export default function FollowUpJobCard({ job ,showFollowUp=true}: { job: JobsWi
           <p aria-labelledby="company" className="text-secondary-foreground text-sm">{job.company_name}</p>
         </div>
         {lastFollowDateAgo && (
-          <p className="text-secondary-foreground text-sm">{`last follow up ${Math.floor(lastFollowDateAgo)} ago`}</p>
+          <p className="text-secondary-foreground text-sm">{`last follow up ${Math.floor(lastFollowDateAgo)===0?"today":`${Math.floor(lastFollowDateAgo)} ago`}`}</p>
         )}
         {!lastFollowDateAgo && appliedDateAgo && (
-          <p className="text-secondary-foreground text-sm">{`applied ${Math.floor(appliedDateAgo)} ago`}</p>
+          <p className="text-secondary-foreground text-sm">{`applied ${Math.floor(appliedDateAgo)===0?"today":`${Math.floor(appliedDateAgo)} ago`}`}</p>
         )}
       </div>
       <div className="flex justify-between items-end">

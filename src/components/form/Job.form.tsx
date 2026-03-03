@@ -110,9 +110,10 @@ export default function JobForm({
         </div>
 
         <div className="space-y-2">
-          <Label>Job Type : {formStates.job_type}</Label>
+          <Label>Job Type</Label>
 
           <Select
+           key={formStates.id}
             value={formStates.job_type}
             onValueChange={(value: IJobType) => {
               handleSelectChange("job_type",value);
@@ -143,6 +144,7 @@ export default function JobForm({
         <div className="space-y-2">
           <Label>Status</Label>
           <Select
+          key={formStates.id}
             value={formStates.status}
             onValueChange={(value: JobStatus) => {
               handleSelectChange("status",value);

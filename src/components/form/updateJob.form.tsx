@@ -6,18 +6,7 @@ import { useJobs, type IJobWithId } from "@/stores/jobs.store";
 
 import JobForm from "./Job.form";
 
-export default function UpdateJobForm({ jobId }: { jobId: IJobWithId["id"] }) {
-  const [loading, setLoading] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
-  const FormState = useJobFormState((state) => state.value);
-  const job = useJobs((state) => state.jobs.find((j) => j.id === jobId));
-  const initFormState = useJobFormState((state) => state.initFormState);
-
-  const updateJob = useJobs((state) => state.updateJob);
-  const updateState = useJobFormState((state) => state.update);
-  const resetState = useJobFormState((state) => state.reset);
-
-  function createUpdateJob(form: typeof FormState): IJobWithId {
+  function createUpdateJob(form: IJobWithId): IJobWithId {
     const now = new Date().toISOString();
 
     return {
@@ -46,13 +35,27 @@ export default function UpdateJobForm({ jobId }: { jobId: IJobWithId["id"] }) {
     };
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setLoading(true);
+export default function UpdateJobForm({ jobId }: { jobId: IJobWithId["id"] }) {
+  const [loading, setLoading] = useState(false);
+  const FormState = useJobFormState((state) => state.value);
+  const job = useJobs((state) => state.jobs.find((j) => j.id === jobId));
+  const initFormState = useJobFormState((state) => state.initFormState);
 
-    let newJob = createUpdateJob(FormState);
-    updateJob(newJob);
+  const updateJob = useJobs((state) => state.updateJob);
+  const updateState = useJobFormState((state) => state.update);
+  const resetState = useJobFormState((state) => state.reset);
+
+
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+     e.preventDefault();
+  setLoading(true);
+
+  try {
+    updateJob(createUpdateJob(FormState));
+  } finally {
     setLoading(false);
+  }
   }
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -65,21 +68,17 @@ export default function UpdateJobForm({ jobId }: { jobId: IJobWithId["id"] }) {
     updateState({ [name]: value });
   }
 
-  useEffect(() => {
-    if (job) {
-      initFormState(job);
-      setIsHydrated(true);
-    } else {
-      resetState();
-    }
+useEffect(() => {
+  if (!job) return;
 
-    return () => {
-      if (isHydrated) setIsHydrated(false);
-      resetState();
-    };
-  }, [jobId, job, initFormState, resetState]);
+  initFormState(job);
 
-  if (!isHydrated) return <div>loading...</div>;
+  return () => {
+    resetState();
+  };
+}, [job, initFormState, resetState]);
+
+if (!job) return <div>loading...</div>;
 
   return (
     <JobForm

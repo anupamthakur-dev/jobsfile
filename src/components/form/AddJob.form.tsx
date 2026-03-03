@@ -33,7 +33,7 @@ function createNewJob(form: IJobWithId): IJobWithId {
   };
 }
 
-export default function AddJobForm() {
+export default function AddJobForm(){
   const [loading, setLoading] = useState(false);
   const FormState = useJobFormState((state) => state.value);
   const addJob = useJobs((state) => state.addJob);
@@ -42,14 +42,15 @@ export default function AddJobForm() {
   const resetState = useJobFormState((state) => state.reset);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setLoading(true);
+       e.preventDefault();
+  setLoading(true);
 
-    let newJob = createNewJob(FormState);
-
-    addJob(newJob);
+  try {
+    addJob(createNewJob(FormState));
+  } finally {
     setLoading(false);
-    resetState();
+    resetState()
+  }
   }
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
