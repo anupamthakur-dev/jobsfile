@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import Icon from "../Icon";
-import AddJobForm from "../form/addJob.form";
+import AddJobForm from "../form/AddJobForm";
 
 function AddJobDialog({
   label,
