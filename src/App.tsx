@@ -6,6 +6,7 @@ import './App.css'
 import MainLayout from "./components/MainLayout"
 import { Outlet } from "react-router"
 import { useEffect } from "react"
+import { MvpNotice } from "./components/MvpNotice"
 
 function App() {
   useEffect(()=>{
@@ -13,15 +14,19 @@ function App() {
     return unsub;
   },[])
   return (
+    <>
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="min-h-screen">
+    <MvpNotice/>
         <MainLayout>
+        
           <Outlet/>
         </MainLayout>
       
       </SidebarInset>
     </SidebarProvider>
+    </>
   )
 }
 

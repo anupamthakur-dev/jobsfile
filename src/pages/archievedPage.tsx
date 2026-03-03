@@ -2,19 +2,22 @@ import { useJobs } from "@/stores/jobs.store";
 import { EmptyState } from "./JobDetails";
 import CardJob from "@/components/card";
 
-export default function StarredPage() {
+export default function ArchievedPage() {
   const jobs = useJobs((state) => state.jobs);
 
-  const starredJobs = jobs.filter((j) => j.starred);
+  const archievedJobs = jobs.filter((j) => j.archived);
 
-  if (starredJobs.length === 0) return <EmptyState
-  heading="Nothing starred yet"
-  title="You haven’t marked any jobs as favorites."
-/>;
+  if (archievedJobs.length === 0)
+    return (
+     <EmptyState
+  heading="No archived jobs"
+  title="Jobs you archive will appear here for reference."
+/>
+    );
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-      {starredJobs.map((job) => (
+      {archievedJobs.map((job) => (
         <CardJob key={job.id} job={job} />
       ))}
     </div>

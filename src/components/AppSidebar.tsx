@@ -4,26 +4,14 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar";
 import logo from "@/assets/jobsFile_logo.svg";
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "@radix-ui/react-collapsible";
-import Icon from "./Icon";
-import { NavLink } from "react-router";
+
 import { useJobNav } from "@/stores/jobNav.store";
 import { useEffect } from "react";
 import { useJobs } from "@/stores/jobs.store";
-import CollapsibleNav from "./collapsibleNav";
+
 import CollapsibleItems from "./CollapsibleItems";
 
 export function AppSidebar() {

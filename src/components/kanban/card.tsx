@@ -6,6 +6,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { Card, CardContent } from "../ui/card";
 import type { IJobWithId } from "@/stores/jobs.store";
+import { NavLink } from "react-router";
 
 function JobCard({ job }: { job: IJobWithId }) {
   const {
@@ -33,7 +34,7 @@ function JobCard({ job }: { job: IJobWithId }) {
       }`}
     >
       <CardContent className="p-3">
-        <p className="font-medium">{job.job_title}</p>
+        <NavLink to={`/${job.id}`}><p className="font-medium underline">{job.job_title}</p></NavLink>
         <p className="text-sm text-muted-foreground">
           {job.company_name}
         </p>

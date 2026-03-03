@@ -4,6 +4,7 @@ import Icon from "@/components/Icon";
 import UpdateJobDialog from "@/components/dialogs/UpdateJob.dialog";
 import { Button } from "@/components/ui/button";
 import { AlertDialogDestructive } from "@/components/dialogs/confirm.dialog";
+import { formatDate } from "@/utils/helper";
 
 function JobDetails() {
   const { jobId } = useParams<{ jobId: string }>();
@@ -14,13 +15,19 @@ function JobDetails() {
  
 
   if (!jobId) {
-    return <EmptyState title="Not Found" />;
+    return <EmptyState
+  heading="Page not found"
+  title="Looks like you took a wrong turn."
+/>;
   }
 
   const job = getJob(jobId);
 
   if (!job) {
-    return <EmptyState title="Job not found" />;
+    return <EmptyState
+  heading="Job not found"
+  title="This job doesn’t exist or may have been removed."
+/>;
   }
 
   function starJob(id: IJobWithId["id"]) {
@@ -124,15 +131,26 @@ function Badge({ label }: { label: string }) {
   return <span className="rounded-md border px-2 py-1 text-xs">{label}</span>;
 }
 
-export function EmptyState({ title }: { title: string }) {
+export function EmptyState({
+  title,
+  heading,
+}: {
+  title: string;
+  heading: string;
+}) {
   return (
-    <div className="flex h-[60vh] items-center justify-center text-sm text-muted-foreground">
-      {title}
+    <div className="flex h-[60vh] items-center justify-center text-center text-muted-foreground">
+      <div className="space-y-1">
+        <h2 className="text-base font-semibold text-foreground">
+          {heading}
+        </h2>
+        <p className="text-sm">
+          {title}
+        </p>
+      </div>
     </div>
   );
 }
 
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString();
-}
+
 export default JobDetails;

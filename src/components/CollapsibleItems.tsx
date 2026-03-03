@@ -15,9 +15,7 @@ import { isSideNavJobRouteArray, isSideNavMenuArray } from "@/utils/helper";
 import { NavLink } from "react-router";
 import Icon from "./Icon";
 
-type CollapsibleInput = SideNavMenu | jobRoute;
-
-export default function CollapsibleItems({ nav }: { nav: CollapsibleInput }) {
+export default function CollapsibleItems({ nav }: { nav: SideNavMenu }) {
   return (
     <Collapsible>
       <SidebarMenuItem>

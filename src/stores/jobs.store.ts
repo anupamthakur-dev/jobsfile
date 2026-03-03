@@ -16,7 +16,12 @@ export interface IJobWithId extends IJob {
 
   // tracking & notes
   notes?: string;
-  followUpDate?: string;
+
+  followUpDate?: string;//scheduled
+  followedUpAt?: string;//sent follow up
+  
+  archived: boolean
+  archivedAt?: string
 }
 
 interface Jobs {
