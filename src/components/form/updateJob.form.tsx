@@ -32,7 +32,6 @@ export default function UpdateJobForm({ jobId }: { jobId: IJobWithId["id"] }) {
       job_type: form.job_type,
 
       // tracking
-      applied: form.applied,
       starred: form.starred,
       status: form.status,
 

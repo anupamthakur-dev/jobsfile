@@ -7,7 +7,7 @@ export interface IJobWithId extends IJob {
   id: string;
 
   starred: boolean;
-  applied: boolean;
+
 
   status: JobStatus;
 
@@ -19,7 +19,7 @@ export interface IJobWithId extends IJob {
 
   followUpDate?: string;//scheduled
   followedUpAt?: string;//sent follow up
-  
+
   archived: boolean
   archivedAt?: string
 }

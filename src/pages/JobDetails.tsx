@@ -83,7 +83,6 @@ function JobDetails() {
       <section className="mt-4 flex flex-wrap gap-3 text-xs text-muted-foreground">
         <Badge label={job.status} />
         {job.job_type && <Badge label={job.job_type} />}
-        {job.applied && <Badge label="Applied" />}
         {job.starred && <Badge label="Starred" />}
       </section>
 
@@ -128,7 +127,7 @@ function JobDetails() {
 }
 
 function Badge({ label }: { label: string }) {
-  return <span className="rounded-md border px-2 py-1 text-xs">{label}</span>;
+  return <span className="rounded-md border px-2 py-1 text-xs capitalize">{label}</span>;
 }
 
 export function EmptyState({

@@ -9,7 +9,7 @@ import {
 import { Button } from "../ui/button";
 
 import Icon from "../Icon";
-import AddJobForm from "@/components/form/addJob.form";
+import AddJobForm from "../form/addJob.form";
 
 function AddJobDialog({
   label,

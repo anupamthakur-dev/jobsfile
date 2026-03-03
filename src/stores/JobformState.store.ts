@@ -17,7 +17,6 @@ const initialState: IJobWithId = {
     recruiter_email: "",
     date_applied: "",
     job_type:'full-time',
-    applied:false,
     createdAt:'',
     starred:false,
     status:'applied',

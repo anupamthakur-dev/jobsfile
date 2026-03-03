@@ -19,7 +19,6 @@ function createNewJob(form: IJobWithId): IJobWithId {
     recruiter_email: form.recruiter_email || "",
     job_type: form.job_type || "full-time",
 
-    applied: true,
     starred: false,
     status: form.status || "applied",
 
@@ -29,7 +28,8 @@ function createNewJob(form: IJobWithId): IJobWithId {
 
     createdAt: now,
     updatedAt: undefined,
-    archived:false
+    archived:false,
+    archivedAt: undefined,
   };
 }
 
