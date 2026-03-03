@@ -9,7 +9,7 @@ import {
 import { Button } from "../ui/button";
 
 import Icon from "../Icon";
-import AddJobForm from "../form/addJob.form";
+import AddJobForm from "../form/addJob.form.tsx";
 
 
 function AddJobDialog({label,variant,icon}:{label:string,variant:"link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined,icon:string}){
