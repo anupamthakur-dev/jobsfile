@@ -46,7 +46,8 @@ export const useJobNav = create<IJobNav>((set)=>{
     },
     syncFromJobs() {
         const jobs = useJobs.getState().jobs;
-        const statusWiseNav = parseJobForNav(jobs);
+        const nonArchievedJobs = jobs.filter((j)=>!j.archived)
+        const statusWiseNav = parseJobForNav(nonArchievedJobs);
 
           set((state)=>{
             const nextNavs: SideNavMenu[] = state.navs.map((nav) => {

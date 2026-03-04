@@ -89,7 +89,7 @@ if (!job) return <div>loading...</div>;
       submitLabel="Update Job"
       submitProgressLabel="Updating..."
       formStates={FormState}
-      resetForm={resetState}
+      isReset={false}
     />
   );
 }

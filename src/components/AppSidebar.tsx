@@ -16,7 +16,7 @@ import CollapsibleItems from "./CollapsibleItems";
 
 export function AppSidebar() {
   const { open } = useSidebar();
-  const jobs = useJobs((state) => state.jobs);
+  const jobs = useJobs((state) => state.jobs)
   const navs = useJobNav((state) => state.navs);
   const syncFromJobs = useJobNav((state) => state.syncFromJobs);
 

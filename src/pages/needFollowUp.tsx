@@ -75,7 +75,7 @@ export default function NeedFollowUp() {
   const jobs = useJobs((state) => state.jobs);
   const needFollowUps = jobs.map((job) => {
     let lastFollowUp = job.followedUpAt || job.date_applied;
-    if (!lastFollowUp) return null;
+    if (!lastFollowUp || job.archived) return null;
     const diff = Math.floor(dayDifference(new Date(lastFollowUp)));
 
     return { ...job, diff };
@@ -157,11 +157,7 @@ function TodayFollowUps({
   );
 }
 
-function UpcomingFollowUps({
-  jobs,
-}: {
-  jobs: JobsWithDiff[];
-}) {
+function UpcomingFollowUps({ jobs }: { jobs: JobsWithDiff[] }) {
   const scheduledFollowUps = jobs.filter((job) => !!job.followUpDate);
 
   if (scheduledFollowUps.length === 0)
@@ -216,7 +212,7 @@ function SentToday({ jobs }: { jobs: IJobWithId[] }) {
         {todayActivity.map((j) => (
           <>
             <li className="my-2 ">
-              <FollowUpJobCard key={j.id} job={j}  showFollowUp={false}/>
+              <FollowUpJobCard key={j.id} job={j} showFollowUp={false} />
             </li>
             <Separator />
           </>

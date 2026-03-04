@@ -4,36 +4,17 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import Icon from "../Icon";
-import AddJobForm from "../form/AddJobForm";
 
-function AddJobDialog({
-  label,
-  variant,
-  icon,
-}: {
-  label: string;
-  variant:
-    | "link"
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | null
-    | undefined;
-  icon: string;
-}) {
+} from "@/components/ui/dialog";
+
+import AddJobForm from "../form/AddJobForm";
+import useDialogStore from "@/stores/dialogStore";
+
+function AddJobDialog() {
+  const {isAddJobDialog,closeAddJobDialog,openAddJobDialog} = useDialogStore()
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant={variant}>
-          <Icon iconName={icon} /> <span>{label}</span>
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isAddJobDialog} onOpenChange={(v)=>v?openAddJobDialog():closeAddJobDialog()}>
+      
 
       <DialogContent className="h-[calc(100vh-64px)]">
         <DialogHeader>

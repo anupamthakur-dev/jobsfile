@@ -19,13 +19,13 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
 import { useJobs } from "@/stores/jobs.store";
-import JobCard from "./card";
+import DNDJobCard from "./card";
 import Icon from "../Icon";
 import type { ColumnKey} from "@/types";
 import { useState } from "react";
 import KanbanColumn from "./column";
 import { KANBAN_COLUMNS } from "@/constant";
-import { Card, CardContent } from "../ui/card";
+import CardJob from "../cards/JobCard";
 
 
 
@@ -35,6 +35,10 @@ import { Card, CardContent } from "../ui/card";
 export default function KanbanBoard() {
   const jobs = useJobs((s) => s.jobs);
   const updateJob = useJobs((s) => s.updateJob);
+ 
+  const nonArchievedJobs = jobs.filter((job)=>!job.archived)
+
+ 
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -54,7 +58,7 @@ export default function KanbanBoard() {
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
 
   const activeJob =
-    jobs.find((job) => job.id === activeJobId) ?? null;
+    nonArchievedJobs.find((job) => job.id === activeJobId) ?? null;
 
   const collisionDetectionStrategy: CollisionDetection =
     (args) => {
@@ -84,7 +88,7 @@ export default function KanbanBoard() {
 
     if (!over) return;
 
-    const activeJob = jobs.find((j) => j.id === active.id);
+    const activeJob = nonArchievedJobs.find((j) => j.id === active.id);
     if (!activeJob) return;
 
     const overId = String(over.id);
@@ -103,7 +107,7 @@ export default function KanbanBoard() {
     ) {
       targetStatus = overContainerId as ColumnKey;
     } else {
-      const overJob = jobs.find((j) => j.id === overId);
+      const overJob = nonArchievedJobs.find((j) => j.id === overId);
       targetStatus = overJob?.status;
     }
 
@@ -112,7 +116,12 @@ export default function KanbanBoard() {
     updateJob({ id: activeJob.id, status: targetStatus });
   }
 
+   if(nonArchievedJobs.length ===0) return ;
+
   return (
+    <section className="grid grid-rows-[auto_1fr] h-full   ">
+      <h1 className="font-bold">All Jobs</h1>
+
     <DndContext
       sensors={sensors}
       collisionDetection={collisionDetectionStrategy}
@@ -123,8 +132,8 @@ export default function KanbanBoard() {
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 h-full ">
         {KANBAN_COLUMNS.map((column) => {
           const isCollapsed = collapsed[column.key];
-          const columnJobs = jobs.filter(
-            (j) => (j.status === column.key && !j.archived)
+          const columnJobs = nonArchievedJobs.filter(
+            (j) => (j.status === column.key)
           );
 
           return (
@@ -172,7 +181,7 @@ export default function KanbanBoard() {
               >
                 <div className="space-y-2 flex-1 ">
                   {columnJobs.map((job) => (
-                    <JobCard key={job.id} job={job} />
+                    <DNDJobCard key={job.id} job={job} />
                   ))}
                 </div>
               </SortableContext>
@@ -183,16 +192,11 @@ export default function KanbanBoard() {
 
       <DragOverlay>
         {activeJob ? (
-          <Card className="cursor-grabbing shadow-lg">
-            <CardContent className="p-3">
-              <p className="font-medium">{activeJob.job_title}</p>
-              <p className="text-sm text-muted-foreground">
-                {activeJob.company_name}
-              </p>
-            </CardContent>
-          </Card>
+          <CardJob job={activeJob} />
         ) : null}
       </DragOverlay>
     </DndContext>
+       </section>
   );
 }
+

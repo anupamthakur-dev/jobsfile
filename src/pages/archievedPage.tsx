@@ -1,6 +1,7 @@
 import { useJobs } from "@/stores/jobs.store";
 import { EmptyState } from "./JobDetails";
-import CardJob from "@/components/card";
+
+import JobCard from "@/components/cards/JobCard";
 
 export default function ArchievedPage() {
   const jobs = useJobs((state) => state.jobs);
@@ -18,7 +19,7 @@ export default function ArchievedPage() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
       {archievedJobs.map((job) => (
-        <CardJob key={job.id} job={job} />
+        <JobCard key={job.id} job={job} />
       ))}
     </div>
   );

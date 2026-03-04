@@ -36,7 +36,8 @@ export default function JobForm({
   loading,
   resetForm,
   submitLabel,
-  submitProgressLabel
+  submitProgressLabel,
+  isReset=true
 }: {
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -45,9 +46,10 @@ export default function JobForm({
   handleSubmit(e: React.FormEvent<HTMLFormElement>): void;
   handleSelectChange(name:string,value: JobStatus | IJobType): void;
   loading: boolean;
-  resetForm():void;
+  resetForm?:()=>void;
   submitLabel:string;
   submitProgressLabel:string
+  isReset?:boolean
 }) {
   return (
     <form
@@ -186,9 +188,9 @@ export default function JobForm({
 
       {/* Sticky bottom bar */}
       <div className="border-t bg-background px-4 py-3 flex justify-end gap-3">
-        <Button type="reset" variant="outline" onClick={resetForm}>
+       {isReset && resetForm && <Button type="reset" variant="outline" onClick={resetForm}>
           Reset
-        </Button>
+        </Button>}
         <Button type="submit" disabled={loading}>
           {loading ? submitProgressLabel : submitLabel}
         </Button>

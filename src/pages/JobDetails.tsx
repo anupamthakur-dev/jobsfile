@@ -1,71 +1,88 @@
 import { useParams } from "react-router";
-import { useJobs, type IJobWithId } from "@/stores/jobs.store";
+import { useJobs } from "@/stores/jobs.store";
 import Icon from "@/components/Icon";
-import UpdateJobDialog from "@/components/dialogs/UpdateJob.dialog";
 import { Button } from "@/components/ui/button";
-import { AlertDialogDestructive } from "@/components/dialogs/confirm.dialog";
 import { formatDate } from "@/utils/helper";
+import useDialogStore from "@/stores/dialogStore";
+import { ArchievedNotice } from "@/components/ArchievedNotice";
+import {
+  archieveJob,
+  deleteJob,
+  restoreJob,
+  starAJob,
+} from "@/services/jobActions";
 
 function JobDetails() {
   const { jobId } = useParams<{ jobId: string }>();
+  const { openUpdateJobDialog } = useDialogStore();
   const { getJob } = useJobs();
-  const { updateJob } = useJobs();
-  const {removeJob} = useJobs();
-
- 
 
   if (!jobId) {
-    return <EmptyState
-  heading="Page not found"
-  title="Looks like you took a wrong turn."
-/>;
+    return (
+      <EmptyState
+        heading="Page not found"
+        title="Looks like you took a wrong turn."
+      />
+    );
   }
 
   const job = getJob(jobId);
 
   if (!job) {
-    return <EmptyState
-  heading="Job not found"
-  title="This job doesn’t exist or may have been removed."
-/>;
+    return (
+      <EmptyState
+        heading="Job not found"
+        title="This job doesn’t exist or may have been removed."
+      />
+    );
   }
 
-  function starJob(id: IJobWithId["id"]) {
-    if (!job) return;
-    updateJob({ id, starred: !job.starred });
-  }
-
-   function handleRemove(){
-    if(!job) return;
-    removeJob(job.id)
-  }
- 
-  function archieveJob(id: IJobWithId["id"]){
-     if(!id) return;
-     const now = new Date()
-     updateJob({id,archived:true,archivedAt:now.toISOString()})
-  }
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 md:py-10">
+      {job.archived && job.archivedAt && (
+        <ArchievedNotice
+          archievedDate={new Date(job.archivedAt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          })}
+          handleRestore={() => restoreJob(job.id)}
+        />
+      )}
       {/* Header */}
       <header className=" border-b pb-4 ">
         <div className=" flex items-center justify-end gap-2">
-          <UpdateJobDialog
-            variant={"secondary"}
-            label="Edit"
-            jobId={job.id}
-            icon="SquarePen"
-          />
-          <Button variant={"secondary"} onClick={()=>archieveJob(job.id)} disabled={job.archived}><Icon iconName="Package" size={18}/> <span className="text-sm">Archieve</span></Button>
-      
-          <AlertDialogDestructive onConfirm={handleRemove} />
+          {!job.archived && (
+            <Button
+              variant={"secondary"}
+              onClick={() => {
+                openUpdateJobDialog(job.id);
+              }}
+            >
+              <Icon iconName="SquarePen" size={18} />{" "}
+              <span className="text-sm">Edit</span>
+            </Button>
+          )}
+          {!job.archived && (
+            <Button
+              variant={"secondary"}
+              onClick={() => archieveJob(job.id)}
+              disabled={job.archived}
+            >
+              <Icon iconName="Package" size={18} />{" "}
+              <span className="text-sm">Archieve</span>
+            </Button>
+          )}
+          <Button variant="destructive" onClick={() => deleteJob(job.id)}>
+            <Icon iconName="Trash" size={18} />{" "}
+            <span className="text-sm">Delete</span>
+          </Button>
         </div>
         <div>
           <div className="flex items-center gap-4 ">
             <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
               {job.job_title}
             </h1>
-            <button className="cursor-pointer" onClick={() => starJob(job.id)}>
+            <button className="cursor-pointer" onClick={() => starAJob(job.id)}>
               <Icon
                 iconName="Star"
                 fill={job.starred ? "#FACC15" : "transparent"}
@@ -76,7 +93,6 @@ function JobDetails() {
           </div>
           <p className="text-sm text-muted-foreground">{job.company_name}</p>
         </div>
-        
       </header>
 
       {/* Meta */}
@@ -127,7 +143,11 @@ function JobDetails() {
 }
 
 function Badge({ label }: { label: string }) {
-  return <span className="rounded-md border px-2 py-1 text-xs capitalize">{label}</span>;
+  return (
+    <span className="rounded-md border px-2 py-1 text-xs capitalize">
+      {label}
+    </span>
+  );
 }
 
 export function EmptyState({
@@ -140,16 +160,11 @@ export function EmptyState({
   return (
     <div className="flex h-[60vh] items-center justify-center text-center text-muted-foreground">
       <div className="space-y-1">
-        <h2 className="text-base font-semibold text-foreground">
-          {heading}
-        </h2>
-        <p className="text-sm">
-          {title}
-        </p>
+        <h2 className="text-base font-semibold text-foreground">{heading}</h2>
+        <p className="text-sm">{title}</p>
       </div>
     </div>
   );
 }
-
 
 export default JobDetails;

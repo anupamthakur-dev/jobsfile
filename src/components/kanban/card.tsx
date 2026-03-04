@@ -1,14 +1,9 @@
-import {
-  useSortable,
- 
-} from "@dnd-kit/sortable";
-
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Card, CardContent } from "../ui/card";
 import type { IJobWithId } from "@/stores/jobs.store";
-import { NavLink } from "react-router";
+import JobCard from "../cards/JobCard";
 
-function JobCard({ job }: { job: IJobWithId }) {
+function DNDJobCard({ job }: { job: IJobWithId }) {
   const {
     setNodeRef,
     attributes,
@@ -24,22 +19,14 @@ function JobCard({ job }: { job: IJobWithId }) {
   };
 
   return (
-    <Card
+    <JobCard
+      job={job}
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      className={`cursor-grab ${
-        isDragging ? "opacity-50" : ""
-      }`}
-    >
-      <CardContent className="p-3">
-        <NavLink to={`/${job.id}`}><p className="font-medium underline">{job.job_title}</p></NavLink>
-        <p className="text-sm text-muted-foreground">
-          {job.company_name}
-        </p>
-      </CardContent>
-    </Card>
+      className={`cursor-grab ${isDragging ? "opacity-50" : ""}`}
+    />
   );
 }
-export default JobCard;
+export default DNDJobCard;

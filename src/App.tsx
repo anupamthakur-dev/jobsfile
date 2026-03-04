@@ -7,6 +7,9 @@ import MainLayout from "./components/MainLayout"
 import { Outlet } from "react-router"
 import { useEffect } from "react"
 import { MvpNotice } from "./components/MvpNotice"
+import AddJobDialog from "./components/dialogs/AddJob.dialog"
+import UpdateJobDialog from "./components/dialogs/UpdateJob.dialog"
+import { AlertDeleteDialog } from "./components/dialogs/AlertDeleteDialog"
 
 function App() {
   useEffect(()=>{
@@ -22,6 +25,9 @@ function App() {
         <MainLayout>
         
           <Outlet/>
+          <AddJobDialog />
+          <UpdateJobDialog/>
+          <AlertDeleteDialog/>
         </MainLayout>
       
       </SidebarInset>

@@ -8,18 +8,18 @@ import {
   AlertDialogHeader,
   AlertDialogMedia,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 import { Trash2Icon } from "lucide-react"
-import Icon from "../Icon"
+import useDialogStore from "@/stores/dialogStore"
+import { useJobs } from "@/stores/jobs.store";
 
-export function AlertDialogDestructive({onConfirm}:{onConfirm:()=>void}) {
+export function AlertDeleteDialog() {
+  const {isAlertDialog,closeAlertDialog,targetJobId} = useDialogStore();
+  const deleteJob = useJobs(state=>state.removeJob);
+  if(!targetJobId) return;
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-           <Button variant={"destructive"}><Icon iconName="Trash" size={18}/> <span className="text-sm">Remove</span></Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={isAlertDialog} onOpenChange={(v)=>v?null:closeAlertDialog()} >
+      
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
@@ -32,7 +32,7 @@ export function AlertDialogDestructive({onConfirm}:{onConfirm:()=>void}) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
-          <AlertDialogAction variant="destructive" onClick={onConfirm}>Delete</AlertDialogAction>
+          <AlertDialogAction variant="destructive" onClick={()=>deleteJob(targetJobId)}>Delete</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
